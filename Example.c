@@ -1,24 +1,32 @@
-/**
-* THIS IS THE HEADER TO IMPORT
-*/
-#import "EPUB3.h"
+#include <stdio.h>
+#include "EPUB3.h"
+
+#define EPUB3ErrorNone 0
 
 
-/**
-* EXAMPLE USAGE
-*/
 
-// create an EPUB3Ref
-EPUB3Error result;
-EPUB3Ref epub = EPUB3CreateWithArchiveAtPath(<path to epub>, &result);
+int main(void) {
+    EPUB3Error result;
+    EPUB3Ref epub = EPUB3CreateWithArchiveAtPath("example.epub", &result);
+    if (epub == NULL) {
+        fprintf(stderr, "Failed to open EPUB file\n");
+        return 1;
+    }
 
-// extraction of EPUB
-EPUB3Error result = EPUB3ExtractArchiveToPath(epub, <path to extract directory>);
+    EPUB3Error extractResult = EPUB3ExtractArchiveToPath(epub, "output_directory");
+    if (extractResult != EPUB3ErrorNone) {
+        fprintf(stderr, "Failed to extract EPUB file\n");
+        EPUB3Release(epub);
+        return 1;
+    }
 
-// get title
-char * title = EPUB3CopyTitle(epub);
+    char *title = EPUB3CopyTitle(epub);
+    char *identifier = EPUB3CopyIdentifier(epub);
 
-// book unique identifier
-char * identifier = EPUB3CopyIdentifier(epub);
+    printf("Title: %s\n", title);
+    printf("Identifier: %s\n", identifier);
 
-// REFER TO EPUB3.h FOR ALL API CALLS
+    // Free or release resources as needed
+    EPUB3Release(epub);
+    return 0;
+}
