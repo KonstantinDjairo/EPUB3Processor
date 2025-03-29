@@ -19,6 +19,12 @@ EPUB3Processor is written in pure C language conforming to ANSI 99 standard. It 
 
 ###Usage and Testing
 
+#### Build for linux
+``` shell
+gcc -std=c99 -Wall $(xml2-config --cflags) -I. -I./support_libs/MiniZip/ -c EPUB3.c -o EPUB3.o
+```
+
+
 Current Xcode project for EPUB3Processor generates a static library named libEPUB3Processor.a. Link to this library in your client code or simply include and compile the code in your project.
 
 **API - see EPUB3.h**
